@@ -1,0 +1,12 @@
+/* Кастомные стили для футера */
+.page-footer {
+    /* Ваши стили здесь */
+}
+
+.page-footer .left-links {
+    /* Стили для левой части футера */
+}
+
+.page-footer .right-links.right-links {
+    min-width: initial;
+}

@@ -1,0 +1,136 @@
+services:
+  gitea:
+    image: gitea/gitea:latest
+    container_name: gitea
+    restart: unless-stopped
+    environment:
+      - USER_UID=1000
+      - USER_GID=1000
+      - GITEA__server__APP_DATA_PATH=/data/gitea
+      - GITEA__server__DOMAIN
+      - GITEA__server__HTTP_PORT=80
+      - GITEA__server__ROOT_URL=${GITEA__server__INSTANCE}/
+      - GITEA__server__LANDING_PAGE
+      - GITEA__server__SSH_PORT
+      - GITEA__server__SSH_DOMAIN=${GITEA__server__DOMAIN}
+      - GITEA__server__MINIMUM_KEY_SIZE_CHECK=false 
+      - GITEA__server__LFS_START_SERVER=true
+      - GITEA__server__LFS_JWT_SECRET
+      - GITEA__server__OFFLINE_MODE=false
+      - GITEA__server__ENABLE_GZIP=true
+      - GITEA__storage__STORAGE_TYPE
+      - GITEA__ui__THEMES
+      - GITEA__ui__DEFAULT_THEME
+      - GITEA__service__DISABLE_REGISTRATION
+      - GITEA__service__REGISTER_EMAIL_CONFIRM
+      - GITEA__openid__ENABLE_OPENID_SIGNIN
+      - GITEA__openid__ENABLE_OPENID_SIGNUP
+      - GITEA__mailer__ENABLED
+      - GITEA__mailer__FROM
+      - GITEA__mailer__SMTP_ADDR
+      - GITEA__mailer__SMTP_PORT
+      - GITEA__mailer__USER
+      - GITEA__mailer__PASSWD
+      - GITEA__packages__ENABLED
+      - GITEA__container__ENABLED
+      - GITEA_CUSTOM=/data/gitea/custom
+      # S3 Storage Configuration
+      - GITEA__storage__SERVE_DIRECT=true
+      - GITEA__storage__MINIO_ENDPOINT=${S3_ENDPOINT}
+      - GITEA__storage__MINIO_ACCESS_KEY_ID=${S3_ACCESS_KEY}
+      - GITEA__storage__MINIO_SECRET_ACCESS_KEY=${S3_SECRET_KEY}
+      - GITEA__storage__MINIO_BUCKET=${S3_BUCKET}
+      - GITEA__storage__MINIO_LOCATION=${S3_LOCATION}
+      - GITEA__storage__MINIO_USE_SSL=${S3_USE_SSL}
+      # Git LFS S3 Configuration
+      - GITEA__lfs__STORAGE_TYPE=${GITEA__storage__STORAGE_TYPE}
+      - GITEA__lfs__SERVE_DIRECT=true
+      - GITEA__lfs__MINIO_ENDPOINT=${S3_ENDPOINT}
+      - GITEA__lfs__MINIO_ACCESS_KEY_ID=${S3_ACCESS_KEY}
+      - GITEA__lfs__MINIO_SECRET_ACCESS_KEY=${S3_SECRET_KEY}
+      - GITEA__lfs__MINIO_BUCKET=${S3_BUCKET}
+      - GITEA__lfs__MINIO_LOCATION=${S3_LOCATION}
+      - GITEA__lfs__MINIO_USE_SSL=${S3_USE_SSL}
+      - GITEA__lfs__PATH=lfs/
+      # Actions S3 Configuration
+      - GITEA__actions__ENABLED=true
+      - GITEA__actions__STORAGE_TYPE=${GITEA__storage__STORAGE_TYPE}
+      - GITEA__actions__MINIO_ENDPOINT=${S3_ENDPOINT}
+      - GITEA__actions__MINIO_ACCESS_KEY_ID=${S3_ACCESS_KEY}
+      - GITEA__actions__MINIO_SECRET_ACCESS_KEY=${S3_SECRET_KEY}
+      - GITEA__actions__MINIO_BUCKET=${S3_BUCKET}
+      - GITEA__actions__MINIO_LOCATION=${S3_LOCATION}
+      - GITEA__actions__MINIO_USE_SSL=${S3_USE_SSL}
+      # Packages S3 Configuration
+      - GITEA__packages__STORAGE_TYPE=${GITEA__storage__STORAGE_TYPE}
+      - GITEA__packages__SERVE_DIRECT=true
+      - GITEA__packages__MINIO_ENDPOINT=${S3_ENDPOINT}
+      - GITEA__packages__MINIO_ACCESS_KEY_ID=${S3_ACCESS_KEY}
+      - GITEA__packages__MINIO_SECRET_ACCESS_KEY=${S3_SECRET_KEY}
+      - GITEA__packages__MINIO_BUCKET=${S3_BUCKET}
+      - GITEA__packages__MINIO_LOCATION=${S3_LOCATION}
+      - GITEA__packages__MINIO_USE_SSL=${S3_USE_SSL}
+      - GITEA__packages__PATH=packages/
+      # Avatar S3 Configuration
+      - GITEA__avatar__STORAGE_TYPE=${GITEA__storage__STORAGE_TYPE}
+      - GITEA__avatar__SERVE_DIRECT=true
+      - GITEA__avatar__MINIO_ENDPOINT=${S3_ENDPOINT}
+      - GITEA__avatar__MINIO_ACCESS_KEY_ID=${S3_ACCESS_KEY}
+      - GITEA__avatar__MINIO_SECRET_ACCESS_KEY=${S3_SECRET_KEY}
+      - GITEA__avatar__MINIO_BUCKET=${S3_BUCKET}
+      - GITEA__avatar__MINIO_LOCATION=${S3_LOCATION}
+      - GITEA__avatar__MINIO_USE_SSL=${S3_USE_SSL}
+      - GITEA__avatar__PATH=avatars/
+      # Attachments S3 Configuration
+      - GITEA__attachment__STORAGE_TYPE=${GITEA__storage__STORAGE_TYPE}
+      - GITEA__attachment__SERVE_DIRECT=true
+      - GITEA__attachment__MINIO_ENDPOINT=${S3_ENDPOINT}
+      - GITEA__attachment__MINIO_ACCESS_KEY_ID=${S3_ACCESS_KEY}
+      - GITEA__attachment__MINIO_SECRET_ACCESS_KEY=${S3_SECRET_KEY}
+      - GITEA__attachment__MINIO_BUCKET=${S3_BUCKET}
+      - GITEA__attachment__MINIO_LOCATION=${S3_LOCATION}
+      - GITEA__attachment__MINIO_USE_SSL=${S3_USE_SSL}
+      - GITEA__attachment__PATH=attachments/
+      # Repository Archive S3 Configuration
+      - GITEA__repo-archive__STORAGE_TYPE=${GITEA__storage__STORAGE_TYPE}
+      - GITEA__repo-archive__SERVE_DIRECT=true
+      - GITEA__repo-archive__MINIO_ENDPOINT=${S3_ENDPOINT}
+      - GITEA__repo-archive__MINIO_ACCESS_KEY_ID=${S3_ACCESS_KEY}
+      - GITEA__repo-archive__MINIO_SECRET_ACCESS_KEY=${S3_SECRET_KEY}
+      - GITEA__repo-archive__MINIO_BUCKET=${S3_BUCKET}
+      - GITEA__repo-archive__MINIO_LOCATION=${S3_LOCATION}
+      - GITEA__repo-archive__MINIO_USE_SSL=${S3_USE_SSL}
+      - GITEA__repo-archive__PATH=repo-archive/
+      # Cache S3 Configuration
+      - GITEA__cache__ENABLED=true
+    volumes:
+      - ./data:/data
+      - ./custom-templates/base:/data/gitea/custom/templates/base:ro
+      - ./custom-templates/public:/data/gitea/custom/public:ro
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - gitea_network
+    ports:
+      - ${GITEA__server__DOCKER_SSH_PORT}:22
+      - ${GITEA__server__PORT}:80
+
+  backup:
+    image: ghcr.io/gromov-io/docker-s3-backup:latest
+    container_name: gitea-backup
+    restart: unless-stopped
+    environment:
+      - BACKUP_PROJECT_NAME=gitea-server
+      - BACKUP_S3_BUCKET=${S3_BUCKET}
+      - BACKUP_S3_ENDPOINT=${S3_ENDPOINT}
+      - BACKUP_S3_ACCESS_KEY=${S3_ACCESS_KEY}
+      - BACKUP_S3_SECRET_KEY=${S3_SECRET_KEY}
+      - BACKUP_S3_FOLDER=gitea-backups
+    volumes:
+      - .:/backup-source:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
+
+networks:
+  gitea_network:
+    name: gitea_network
