@@ -104,7 +104,7 @@ services:
       - GITEA__mailer__USER=${MAIL_USER}
       - GITEA__mailer__PASSWD=${MAIL_PASSWD}
       - GITEA__mailer__PROTOCOL=${MAIL_SMTP_PROTOCOL}
-      - GITEA__mailer__SKIP_VERIFY=false
+      - GITEA__mailer__FORCE_TRUST_SERVER_CERT=false
       - GITEA__mailer__HELO_HOSTNAME=${MAIL_HELO_HOSTNAME}
         # Packages & Container Configuration
       - GITEA__packages__ENABLED=true
