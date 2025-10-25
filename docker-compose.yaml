@@ -50,6 +50,7 @@ services:
   # Git Сервер
   # ============================================================
   gitea:
+    container_name: gitea
     image: gitea/gitea:latest
     restart: unless-stopped
     depends_on:
