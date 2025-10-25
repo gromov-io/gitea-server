@@ -1,5 +1,4 @@
-data/*
+docker-data/*
 .env
 .gitea.env
 backups/
-postgres-data/

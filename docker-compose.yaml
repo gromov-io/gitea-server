@@ -5,7 +5,6 @@ services:
   # ============================================================
   backup:
     image: ghcr.io/gromov-io/docker-s3-backup:latest
-    container_name: gitea-backup
     restart: unless-stopped
     depends_on:
       postgres:
@@ -32,14 +31,13 @@ services:
   # ============================================================
   postgres:
     image: postgres:16-alpine
-    container_name: gitea-postgres
     restart: unless-stopped
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=${POSTGRES_DB}
     volumes:
-      - ./postgres-data:/var/lib/postgresql/data
+      - ./docker-data/postgres:/var/lib/postgresql/data
     networks:
       - gitea_network
     healthcheck:
@@ -53,7 +51,6 @@ services:
   # ============================================================
   gitea:
     image: gitea/gitea:latest
-    container_name: gitea
     restart: unless-stopped
     depends_on:
       postgres:
@@ -185,9 +182,7 @@ services:
         # Cache Configuration
       - GITEA__cache__ENABLED=true
     volumes:
-      - ./data:/data
-      - ./custom-templates/base:/data/gitea/custom/templates/base:ro
-      - ./custom-templates/public:/data/gitea/custom/public:ro
+      - ./docker-data/gitea:/data
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
     networks:
@@ -198,4 +193,4 @@ services:
 
 networks:
   gitea_network:
-    name: gitea_network
+
